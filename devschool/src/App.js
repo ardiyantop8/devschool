@@ -89,6 +89,23 @@ class App extends Component {
       memberIdSelected : member.id
     })
   }
+  deleteButtonHandler = id => {
+    var url = `https://reqres.in/api/users/${id}`
+    axios
+      .delete(url)
+      .then(response => {
+        if (response.status === 204 ) {
+          var members = [... this.state.members];
+          var index = members.findIndex(member => member.id === id);
+          members.splice(index, 1)
+          this.setState({members})
+          alert("Data berhasil dihapus");
+        }
+      })
+      .catch(error => {
+        console.log(error);
+      });
+  }
   render() {
     return (
       <div className="container">
@@ -105,7 +122,7 @@ class App extends Component {
                       <h5 className="card-title">{member.first_name}</h5>
                       <h5 className="card-title">{member.last_name}</h5>
                       <button className="btn btn-primary" style={{padding:"10"}} onClick={() => this.editButtonHandler(member)}>Edit</button>
-                      <button className="btn btn-danger">Delete</button>
+                      <button className="btn btn-danger" style={{padding:"10"}} onClick = {() => this.deleteButtonHandler(member.id)}>Delete</button>
                     </div>
                   </div>
                 </div>
