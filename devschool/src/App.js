@@ -38,8 +38,10 @@ class App extends Component {
     var url = "";
     if (this.state.formStatus === "create") {
       url = "https://reqres.in/api/users";
-    } else if (this.state.formStatus === "edit") {
+      this.addMember(url, payload);
+    } else {
       url = `https://reqres.in/api/users/${this.state.memberIdSelected}`;
+      this.editMember(url, payload);
     }
   };
   addMember = (url, payload) => {
@@ -47,7 +49,7 @@ class App extends Component {
     .post(url, payload)
     .then(response => {
       console.log(response);
-      var members = [...this.state.members];
+      var members = [... this.state.members];
       members.push(response.data);
       this.setState({ members,buttonDisable:false, first_name:"",last_name:"" });
     })
@@ -59,7 +61,7 @@ class App extends Component {
     axios
     .put(url, payload)
     .then(response => {
-      var members = [...this.state.members]
+      var members = [... this.state.members]
       var indexmember = members.findIndex(
         member =>member.id === this.state.memberIdSelected
       );
